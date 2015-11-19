@@ -1,4 +1,4 @@
-import os, json, shutil, ConfigParser
+import os, json, shutil, ConfigParser, sys
 
 requiredfolders = ["data", "data/db", "data/cache"]
 
@@ -45,10 +45,10 @@ def loadconfig():
     cdb["modpackurl"] = "{base}api/modpack/{modpack}/".format(base=cdb["solderurl"], modpack=modpack)
     cdb["modsurl"] = "{base}api/mod/".format(base=cdb["solderurl"])
 
-    if cdb.servermoddir == "replaceme":
+    if cdb["servermoddir"] == "replaceme":
         print("Please configure the settings in data/config.ini")
         sys.exit()
-    elif os.path.exists(cdb.servermoddir) == False:
+    elif os.path.exists(cdb["servermoddir"]) == False:
         print("The set server mod directory does not exist!")
         sys.exit()
 
