@@ -46,6 +46,7 @@ def loadconfig():
         Config = ConfigParser.ConfigParser()
         f = open(configfile, "w")
         Config.add_section("locations")
+        Config.add_section("system")
         Config.set("locations", "servermoddir", "replaceme")
         Config.set("locations", "solderurl", "replaceme")
         Config.set("locations", "modpackname", "replaceme")
@@ -70,7 +71,7 @@ def loadconfig():
     cdb["modsurl"] = "{base}api/mod/".format(base=cdb["solderurl"])
 
     if cdb["servermoddir"] == "replaceme":
-        print("Please configure the settings in data/config.ini")
+        print("Please configure the settings in {0}".format(configfile))
         sys.exit()
 
     if not os.path.exists(cdb["servermoddir"]):
