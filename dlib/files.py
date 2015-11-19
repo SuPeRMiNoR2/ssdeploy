@@ -16,17 +16,17 @@ def checkupdate(config):
     versionurl = "https://raw.githubusercontent.com/SuPeRMiNoR2/ssdeploy/master/version.txt"
     r = requests.get(versionurl)
     if not currentversion == r.content:
-        if config["autoupdate"] == False:
-            print("-----------------------------------------------")
-            print("ssdeploy update availible! Please run git pull")
-            print("-----------------------------------------------")
-        if config["autoupdate"] == True:
+        if config["autoupdate"] == "true":
             print("-----------------------------------------------")
             print("Updating ssdeploy.")
             os.system("git pull")
             print("Done, please restart ssdeploy")
             print("-----------------------------------------------")
             sys.exit()
+        else:
+            print("-----------------------------------------------")
+            print("ssdeploy update availible! Please run git pull")
+            print("-----------------------------------------------")
 
 def checkstructure():
     for i in requiredfolders:
