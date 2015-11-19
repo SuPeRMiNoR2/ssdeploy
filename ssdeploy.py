@@ -32,7 +32,7 @@ servermoddir = config["servermoddir"]
 print("\nStarting SuperSolderDeploy")
 print("Using solder instance: {0}".format(config["solderurl"]))
 print("Modpack name: {0}".format(config["modpackname"]))
-print("Server mods folder: ".format(config["servermoddir"]))
+print("Server mods folder: {0}".format(config["servermoddir"]))
 print("Currently installed modpack version: {0}".format(data["last"]))
 
 print("\nChecking solder for new version...")
