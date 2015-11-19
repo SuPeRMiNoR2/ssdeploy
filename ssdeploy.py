@@ -5,6 +5,9 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-f", "--force",
     help="Forces the update, even if you already have that version installed",
     action="store_true")
+parser.add_argument("-c", "--clean",
+    help="Clean all downloaded mods (WIP)",
+    action="store_true")
 args = parser.parse_args()
 
 #Check to make sure we are running from the right directory
@@ -40,7 +43,7 @@ modindex = modindex.json()
 
 modinfo = {}
 
-for i in dlib.tqdm(modindex["mods"], desc="Downloading Mod Info"):
+for i in dlib.tqdm(modindex["mods"], desc="Downloading Mod Info", leave=True):
     mod = requests.get(config["modsurl"] + i["name"])
     modinfo[i["name"]] = mod.json()
 
@@ -67,7 +70,7 @@ def md5(filename, blocksize=2**20):
     return m.hexdigest()
 
 msgs = []
-for i in dlib.tqdm(modindex["mods"], desc="Downloading Mods"):
+for i in dlib.tqdm(modindex["mods"], desc="Downloading Mods", leave=True):
     info = modinfo[i["name"]]
 
     if not "#clientonly" in info["description"]:
