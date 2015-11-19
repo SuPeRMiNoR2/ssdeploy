@@ -1,5 +1,10 @@
 #!/usr/bin/env python2
-import sys, os, requests, hashlib, json, shutil, zipfile
+import sys, os, requests, hashlib, json, shutil, zipfile, argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("-f", "--force",
+    help="Forces the update, even if you already have that version installed",
+    action="store_true")
+args = parser.parse_args()
 
 #Check to make sure we are running from the right directory
 if not os.path.exists("dlib"):
@@ -12,32 +17,30 @@ dlib.checkstructure()
 
 data, config = dlib.loadconfig()
 
-
 mod_database = config["moddbdir"]
 modcachedir = config["cachedir"]
 servermoddir = config["servermoddir"]
-solderapi = config["solderapiurl"]
 
 #Who needs error detection anyway
 
 print("Downloading main mod info (this will take around 30 seconds)")
-index = requests.get(solderapi)
+index = requests.get(config["modpackurl"])
 index = index.json()
 
 mpversion = index["recommended"]
 print("Current modpack version: {}".format(mpversion))
 
-if mpversion == data["last"]:
+if mpversion == data["last"] and args.force == False:
     error("Already updated to this version.")
 
-modindex = requests.get("http://solder.pc-logix.com/api/modpack/pc-logix-17/" + index["recommended"])
+modindex = requests.get(config["modpackurl"] + index["recommended"])
 modindex = modindex.json()
 
 modinfo = {}
 
 print("Downloading Extra mod info.")
 for i in modindex["mods"]:
-    mod = requests.get("http://solder.pc-logix.com/api/mod/"+i["name"])
+    mod = requests.get(config["modsurl"] +i["name"])
     modinfo[i["name"]] = mod.json()
 print("Done")
 
@@ -101,7 +104,6 @@ else:
                 l = os.path.join(servermoddir, i)
         if not os.path.exists(l):
             print("Failed to remove file: "+l)
-            print("Report this")
         else:
             os.remove(os.path.join(servermoddir, i))
 
@@ -110,6 +112,4 @@ else:
         if not i == "1.7.10":
             shutil.copy(fl, servermoddir)
 
-f = open(datafile, "w")
-json.dump(data, f)
-f.close()
+dlib.saveconfig(data)

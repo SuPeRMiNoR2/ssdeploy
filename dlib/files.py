@@ -23,7 +23,8 @@ def loadconfig():
         f = open(configfile, "w")
         Config.add_section("locations")
         Config.set("locations", "servermoddir", "replaceme")
-        Config.set("locations", "solderapiurl", "replaceme")
+        Config.set("locations", "solderurl", "replaceme")
+        Config.set("locations", "modpackname", "replaceme")
         Config.write(configfile)
         f.close()
 
@@ -32,12 +33,19 @@ def loadconfig():
     cdb = {}
 
     cdb["servermoddir"] = Config.get("locations", "servermoddir")
-    cdb["solderapiurl"] = Config.get("locations", "solderapiurl")
+    cdb["solderurl"] = Config.get("locations", "solderurl")
+    modpack = Config.get("locations", "modpackname")
 
-    if cbd.servermoddir == "replaceme":
+    if not cdb["solderurl"][-1] == "/":
+        cdb["solderurl"] = cdb["solderurl"] + "/"
+
+    cdb["modpackurl"] = "{base}api/modpack/{modpack}/".format(base=cdb["solderurl"], modpack=modpack)
+    cdb["modsurl"] = "{base}api/mod/".format(base=cdb["solderurl"])
+
+    if cdb.servermoddir == "replaceme":
         print("Please configure the settings in data/config.ini")
         sys.exit()
-    elif os.path.exists(cbd.servermoddir) == False:
+    elif os.path.exists(cdb.servermoddir) == False:
         print("The set server mod directory does not exist!")
         sys.exit()
 
