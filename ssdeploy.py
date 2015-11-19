@@ -1,5 +1,6 @@
 #!/usr/bin/env python2
 import sys, os, requests, hashlib, json, shutil, zipfile, argparse
+
 parser = argparse.ArgumentParser()
 parser.add_argument("-f", "--force",
     help="Forces the update, even if you already have that version installed",
@@ -38,11 +39,9 @@ modindex = modindex.json()
 
 modinfo = {}
 
-print("Downloading Extra mod info (this will take around 30 seconds)...")
-for i in modindex["mods"]:
-    mod = requests.get(config["modsurl"] +i["name"])
+for i in dlib.tqdm(modindex["mods"], desc="Downloading Mod Info"):
+    mod = requests.get(config["modsurl"] + i["name"])
     modinfo[i["name"]] = mod.json()
-print("Done")
 
 def generate_filename(i):
     st = "{name}-{version}.zip".format(name=i["name"], version=i["version"])
