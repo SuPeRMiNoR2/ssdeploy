@@ -1,4 +1,4 @@
-import os, json, shutil, ConfigParser, sys
+import os, json, shutil, ConfigParser, sys, requests
 
 requiredfolders = ["data", "data/db", "data/cache"]
 
