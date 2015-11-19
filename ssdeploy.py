@@ -17,9 +17,9 @@ if not os.path.exists("dlib"):
 
 import dlib
 
-dlib.checkupdate()
 dlib.checkstructure()
 data, config = dlib.loadconfig()
+dlib.checkupdate(config)
 
 mod_database = config["moddbdir"]
 modcachedir = config["cachedir"]

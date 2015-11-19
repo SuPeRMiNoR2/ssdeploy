@@ -8,7 +8,7 @@ datafile = os.path.join(base, "data", "db.json")
 configfile = os.path.join(base, "data", "config.ini")
 cachedir = os.path.join(base, "data", "cache")
 
-def checkupdate():
+def checkupdate(config):
     f = open("version.txt")
     currentversion = f.read()
     f.close()
@@ -16,9 +16,17 @@ def checkupdate():
     versionurl = "https://raw.githubusercontent.com/SuPeRMiNoR2/ssdeploy/master/version.txt"
     r = requests.get(versionurl)
     if not currentversion == r.content:
-        print("-----------------------------------------------")
-        print("ssdeploy update availible! Please run git pull")
-        print("-----------------------------------------------")
+        if config["autoupdate"] == False:
+            print("-----------------------------------------------")
+            print("ssdeploy update availible! Please run git pull")
+            print("-----------------------------------------------")
+        if config["autoupdate"] == True:
+            print("-----------------------------------------------")
+            print("Updating ssdeploy.")
+            os.system("git pull")
+            print("Done, please restart ssdeploy")
+            print("-----------------------------------------------")
+            sys.exit()
 
 def checkstructure():
     for i in requiredfolders:
@@ -40,6 +48,7 @@ def loadconfig():
         Config.set("locations", "servermoddir", "replaceme")
         Config.set("locations", "solderurl", "replaceme")
         Config.set("locations", "modpackname", "replaceme")
+        Config.set("system", "autoupdate", "false")
         Config.write(f)
         f.close()
 
@@ -51,6 +60,7 @@ def loadconfig():
     cdb["solderurl"] = Config.get("locations", "solderurl")
     modpack = Config.get("locations", "modpackname")
     cdb["modpackname"] = modpack
+    cdb["autoupdate"] = Config.get("system", "autoupdate")
 
     if not cdb["solderurl"][-1] == "/":
         cdb["solderurl"] = cdb["solderurl"] + "/"
