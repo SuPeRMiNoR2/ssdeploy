@@ -32,7 +32,8 @@ mpversion = index["recommended"]
 print("Current modpack version: {}".format(mpversion))
 
 if mpversion == data["last"] and args.force == False:
-    error("Already updated to this version.")
+    print("Already updated to this version, use -f to force update")
+    sys.exit()
 
 modindex = requests.get(config["modpackurl"] + index["recommended"])
 modindex = modindex.json()
@@ -65,22 +66,25 @@ def md5(filename, blocksize=2**20):
             m.update( buf )
     return m.hexdigest()
 
-for i in modindex["mods"]:
+msgs = []
+for i in dlib.tqdm(modindex["mods"], desc="Downloading Mods"):
     info = modinfo[i["name"]]
 
     if not "#clientonly" in info["description"]:
         if not os.path.exists(os.path.join(mod_database, generate_filename(i))):
-            print("Downloading {0} version {1}".format(info["pretty_name"], i["version"]))
             download_file(i["url"], os.path.join(mod_database, generate_filename(i)))
             dlhash = md5(os.path.join(mod_database, generate_filename(i)))
             if not dlhash == i["md5"]:
-                print("Warning, {0} does not match the hash")
+                msgs.append("Warning, {0} does not match the hash".format(info["pretty_name"]))
 
         zipf = zipfile.ZipFile(os.path.join(mod_database, generate_filename(i)), "r")
         zipf.extractall(modcachedir)
 
     else:
-        print("Skipping client only mod: "+info["pretty_name"])
+        msgs.append("Skipped client only mod: "+info["pretty_name"])
+
+for i in msgs:
+    print(i)
 
 modlocation = os.path.join(modcachedir, "mods")
 modfiles = os.listdir(modlocation)
