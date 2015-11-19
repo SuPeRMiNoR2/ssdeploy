@@ -16,7 +16,9 @@ def checkupdate():
     versionurl = "https://raw.githubusercontent.com/SuPeRMiNoR2/ssdeploy/master/version.txt"
     r = requests.get(versionurl)
     if not currentversion == r.content:
-        print("New version availible! Please run git pull")
+        print("-----------------------------------------------")
+        print("ssdeploy update availible! Please run git pull")
+        print("-----------------------------------------------")
 
 def checkstructure():
     for i in requiredfolders:
