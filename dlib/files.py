@@ -48,7 +48,8 @@ def loadconfig():
     if cdb["servermoddir"] == "replaceme":
         print("Please configure the settings in data/config.ini")
         sys.exit()
-    elif os.path.exists(cdb["servermoddir"]) == False:
+
+    if not os.path.exists(cdb["servermoddir"]):
         print("The set server mod directory ({0}) does not exist!".format(cdb["servermoddir"]))
         sys.exit()
 
