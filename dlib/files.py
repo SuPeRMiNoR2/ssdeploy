@@ -7,6 +7,8 @@ base = os.path.expanduser("~/.config/ssdeploy")
 datafile = os.path.join(base, "db.json")
 configfile = os.path.join(base, "config.ini")
 cachedir = os.path.join(base, "cache")
+moddbdir = os.path.join(base, "db")
+cachedir = os.path.join(base, "cache")
 
 def checkupdate(config):
     f = open("version.txt")
@@ -78,10 +80,9 @@ def loadconfig():
         print("The set server mod directory ({0}) does not exist!".format(cdb["servermoddir"]))
         sys.exit()
 
-    base = os.getcwd()
-    cdb["moddbdir"] = os.path.join(base, "data", "db")
-    cdb["cachedir"] = os.path.join(base, "data", "cache")
-
+    cdb["moddbdir"] = moddbdir
+    cdb["cachedir"] = cachedir
+    
     if os.path.exists(datafile):
         f = open(datafile)
         data = json.load(f)
