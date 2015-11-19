@@ -38,6 +38,7 @@ def loadconfig():
     cdb["servermoddir"] = Config.get("locations", "servermoddir")
     cdb["solderurl"] = Config.get("locations", "solderurl")
     modpack = Config.get("locations", "modpackname")
+    cdb["modpackname"] = modpack
 
     if not cdb["solderurl"][-1] == "/":
         cdb["solderurl"] = cdb["solderurl"] + "/"

@@ -26,13 +26,17 @@ modcachedir = config["cachedir"]
 servermoddir = config["servermoddir"]
 
 #Who needs error detection anyway
+print("Starting SuperSolderDeploy")
+print("Using solder instance: {0}".format(config["solderurl"]))
+print("Modpack name: {0}".format(config["modpackname"]))
+print("Currently installed modpack version: {0}".format(data["last"]))
 
-print("Downloading main mod info...")
+print("Checking solder for new version...")
 index = requests.get(config["modpackurl"])
 index = index.json()
 
 mpversion = index["recommended"]
-print("Current modpack version: {}".format(mpversion))
+print("Newest modpack version: {}".format(mpversion))
 
 if mpversion == data["last"] and args.force == False:
     print("Already updated to this version, use -f to force update")
