@@ -23,7 +23,7 @@ servermoddir = config["servermoddir"]
 
 #Who needs error detection anyway
 
-print("Downloading main mod info (this will take around 30 seconds)")
+print("Downloading main mod info...")
 index = requests.get(config["modpackurl"])
 index = index.json()
 
@@ -38,7 +38,7 @@ modindex = modindex.json()
 
 modinfo = {}
 
-print("Downloading Extra mod info.")
+print("Downloading Extra mod info (this will take around 30 seconds)...")
 for i in modindex["mods"]:
     mod = requests.get(config["modsurl"] +i["name"])
     modinfo[i["name"]] = mod.json()
