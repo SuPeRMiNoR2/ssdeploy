@@ -1,4 +1,7 @@
 #!/usr/bin/env python2
+#SuPeRMiNoR2, 2015
+#MIT License
+
 import sys, os, requests, hashlib, json, shutil, zipfile, argparse
 
 parser = argparse.ArgumentParser()
