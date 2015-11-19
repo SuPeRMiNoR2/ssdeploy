@@ -2,8 +2,11 @@ import os, json, shutil, ConfigParser
 
 requiredfolders = ["data", "data/db", "data/cache"]
 
-datafile = "data/db.json"
-configfile = "data/config.ini"
+base = os.getcwd()
+
+datafile = os.path.join(base, "data", "db.json")
+configfile = os.path.join(base, "data", "config.ini")
+cachedir = os.path.join(base, "data", "cache")
 
 def checkstructure():
     for i in requiredfolders:
@@ -11,24 +14,24 @@ def checkstructure():
             print("Making folder: {0}".format(i))
             os.mkdir(i)
 
-    if os.path.exists(modcachedir):
+    if os.path.exists(cachedir):
         print("Cleaning cache dir")
-        shutil.rmtree(modcachedir)
-    os.mkdir(modcachedir)
+        shutil.rmtree(cachedir)
+    os.mkdir(cachedir)
 
 def loadconfig():
     if not os.path.exists(configfile):
         print("Creating default config file.")
-        Config = ConfigParser.ConfigParse()
+        Config = ConfigParser.ConfigParser()
         f = open(configfile, "w")
         Config.add_section("locations")
         Config.set("locations", "servermoddir", "replaceme")
         Config.set("locations", "solderurl", "replaceme")
         Config.set("locations", "modpackname", "replaceme")
-        Config.write(configfile)
+        Config.write(f)
         f.close()
 
-    Config = ConfigParser.ConfigParse()
+    Config = ConfigParser.ConfigParser()
     Config.read(configfile)
     cdb = {}
 
@@ -62,7 +65,7 @@ def loadconfig():
 
     return data, cdb
 
-def saveconfig(data)
+def saveconfig(data):
     f = open(datafile, "w")
     json.dump(data, f)
     f.close()

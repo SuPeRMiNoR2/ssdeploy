@@ -101,7 +101,7 @@ else:
 
     print("Cleaning up old mods from server dir")
     for i in oldfiles:
-                l = os.path.join(servermoddir, i)
+        l = os.path.join(servermoddir, i)
         if not os.path.exists(l):
             print("Failed to remove file: "+l)
         else:
