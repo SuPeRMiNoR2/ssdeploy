@@ -15,10 +15,10 @@ if not os.path.exists("dlib"):
     print("Error, please run this script from its base directory!.")
     sys.exit()
 
-cwd = os.getcwd()
 import dlib
-dlib.checkstructure()
 
+dlib.checkupdate()
+dlib.checkstructure()
 data, config = dlib.loadconfig()
 
 mod_database = config["moddbdir"]
