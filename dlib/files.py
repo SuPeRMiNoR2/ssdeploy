@@ -49,7 +49,7 @@ def loadconfig():
         print("Please configure the settings in data/config.ini")
         sys.exit()
     elif os.path.exists(cdb["servermoddir"]) == False:
-        print("The set server mod directory does not exist!")
+        print("The set server mod directory ({0}) does not exist!".format(cdb["servermoddir"]))
         sys.exit()
 
     base = os.getcwd()
