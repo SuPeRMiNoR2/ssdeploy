@@ -42,7 +42,7 @@ def loadconfig():
         sys.exit()
 
     base = os.getcwd()
-    cdb["modbdir"] = os.path.join(base, "data", "db")
+    cdb["moddbdir"] = os.path.join(base, "data", "db")
     cdb["cachedir"] = os.path.join(base, "data", "cache")
 
     if os.path.exists(datafile):
