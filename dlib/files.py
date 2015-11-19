@@ -1,12 +1,12 @@
 import os, json, shutil, ConfigParser, sys, requests
 
-requiredfolders = ["data", "data/db", "data/cache"]
+requiredfolders = ["~/.config", "~/.config/ssdeploy", "~/.config/ssdeploy", "~/.config/ssdeploy/db", "~/.config/ssdeploy/cache"]
 
-base = os.getcwd()
+base = os.path.expanduser("~/.config/ssdeploy")
 
-datafile = os.path.join(base, "data", "db.json")
-configfile = os.path.join(base, "data", "config.ini")
-cachedir = os.path.join(base, "data", "cache")
+datafile = os.path.join(base, "db.json")
+configfile = os.path.join(base, "config.ini")
+cachedir = os.path.join(base, "cache")
 
 def checkupdate(config):
     f = open("version.txt")
@@ -30,6 +30,7 @@ def checkupdate(config):
 
 def checkstructure():
     for i in requiredfolders:
+        i = os.path.expanduser(i)
         if not os.path.exists(i):
             print("Making folder: {0}".format(i))
             os.mkdir(i)
