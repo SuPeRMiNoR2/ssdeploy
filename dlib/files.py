@@ -38,7 +38,6 @@ def checkstructure():
             os.mkdir(i)
 
     if os.path.exists(cachedir):
-        print("Cleaning cache dir")
         shutil.rmtree(cachedir)
     os.mkdir(cachedir)
 
