@@ -12,9 +12,11 @@ Right now, the script is very beta, and very messy. I only put it on github to k
 Notice: This script was developed on linux, for linux, and I am not sure if it will work on windows.
 
 ### Installation
-* Install the python module "requests" from pip: `pip install requests`
+* Install the python module "requests" from pip: `pip3 install requests`
 * Clone it: `git clone https://github.com/SuPeRMiNoR2/ssdeploy.git`
 * Change to the ssdeploy directory
 * Run ssdeploy.py
 * Edit data/config.ini
 * Run ssdeploy again
+
+## ssdeploy requires python3!
