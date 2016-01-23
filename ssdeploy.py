@@ -4,6 +4,10 @@
 
 import sys, os, requests, hashlib, json, shutil, zipfile, argparse, platform
 print("Running on python version {0}".format(platform.python_version()))
+major = platform.python_version_tuple()[0]
+if not major == "3":
+    print("Only python 3.x is supported.")
+    sys.exit()
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-f", "--force",
