@@ -3,7 +3,7 @@ major = platform.python_version_tuple()[0]
 
 import os, json, shutil, sys, requests
 
-if major == 2:
+if major == 2 or "2":
         import ConfigParser
 else:
         import configparser as ConfigParser
