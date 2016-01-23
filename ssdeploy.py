@@ -2,7 +2,8 @@
 #SuPeRMiNoR2, 2015
 #MIT License
 
-import sys, os, requests, hashlib, json, shutil, zipfile, argparse
+import sys, os, requests, hashlib, json, shutil, zipfile, argparse, platform
+print("Running on python version {0}".format(platform.python_version()))
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-f", "--force",
