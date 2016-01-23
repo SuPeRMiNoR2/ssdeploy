@@ -18,11 +18,12 @@ if not os.path.exists("dlib"):
     print("Error, please run this script from its base directory!.")
     sys.exit()
 
-import dlib
+from dlib import files
+from dlib import tqdm
 
-dlib.checkstructure()
-data, config = dlib.loadconfig()
-dlib.checkupdate(config)
+files.checkstructure()
+data, config = files.loadconfig()
+files.checkupdate(config)
 
 mod_database = config["moddbdir"]
 modcachedir = config["cachedir"]
@@ -80,7 +81,7 @@ def md5(filename, blocksize=2**20):
     return m.hexdigest()
 
 msgs = []
-for i in dlib.tqdm(modindex["mods"], desc="Downloading Mods", leave=True):
+for i in tqdm.tqdm(modindex["mods"], desc="Downloading Mods", leave=True):
     info = modinfo[i["name"]]
 
     if not "#clientonly" in info["description"]:
@@ -128,4 +129,4 @@ else:
         if not i == "1.7.10":
             shutil.copy(fl, servermoddir)
 
-dlib.saveconfig(data)
+files.saveconfig(data)

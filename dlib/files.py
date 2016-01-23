@@ -1,4 +1,12 @@
-import os, json, shutil, ConfigParser, sys, requests
+import platform
+major = platform.python_version_tuple()[0]
+
+import os, json, shutil, sys, requests
+
+if major == 2:
+        import ConfigParser
+else:
+        import configparser as ConfigParser
 
 requiredfolders = ["~/.config", "~/.config/ssdeploy", "~/.config/ssdeploy", "~/.config/ssdeploy/db", "~/.config/ssdeploy/cache"]
 
