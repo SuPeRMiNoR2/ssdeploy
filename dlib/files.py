@@ -19,7 +19,7 @@ moddbdir = os.path.join(base, "db")
 cachedir = os.path.join(base, "cache")
 
 def checkupdate(config):
-    f = open("version.txt")
+    f = open("version.txt", "rb")
     currentversion = f.read()
     f.close()
 
