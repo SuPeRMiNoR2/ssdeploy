@@ -59,7 +59,7 @@ modindex = modindex.json()
 
 modinfo = {}
 
-for i in tqdm(modindex["mods"], desc="Downloading Mod Info", leave=True):
+for i in tqdm.tqdm(modindex["mods"], desc="Downloading Mod Info", leave=True):
     mod = requests.get(config["modsurl"] + i["name"])
     modinfo[i["name"]] = mod.json()
 
