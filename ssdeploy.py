@@ -27,7 +27,8 @@ from dlib import files
 from dlib import tqdm
 
 files.checkstructure()
-data, config = files.loadconfig()
+#Eventually refactor so that everything uses fullconfig, then rename it to config
+data, config, fullconfig = files.loadconfig()
 files.checkupdate(config)
 
 mod_database = config["moddbdir"]
@@ -133,5 +134,18 @@ else:
         fl = os.path.join(modcachedir, "mods", i)
         if not i == "1.7.10":
             shutil.copy(fl, servermoddir)
+
+    #Config Update Section
+    if fullconfig["system"]["configupdate"] == "true":
+        updatemode = fullconfig["configupdate"]["configupdatemode"]
+        configupdatedir = fullconfig["configupdate"]["configdir"]
+        print("Config Update enabled, mode: {mode}, Config dir: {cdir}".format(mode=updatemode, cdir=configupdatedir))
+
+        if updatemode == "overwrite":
+            if not configupdatedir == "/":
+                print("Deleting current config files")
+                shutil.rmtree(configupdatedir)
+                print("Updating config files")
+                shutil.copytree(os.path.join(modcachedir, "config"), configupdatedir)
 
 files.saveconfig(data)

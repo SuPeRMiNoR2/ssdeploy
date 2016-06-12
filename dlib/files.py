@@ -2,14 +2,14 @@ import os, json, shutil, sys, requests
 import configparser as ConfigParser
 
 requiredfolders = ["~/.config", "~/.config/ssdeploy", "~/.config/ssdeploy", "~/.config/ssdeploy/db", "~/.config/ssdeploy/cache"]
-
+defaultconfig = {"locations": {"servermoddir": "replaceme", "solderurl": "replaceme", "modpackname": "changeme"}, 
+    "system": {"autoupdate": "false", "configupdate": "false"}, "configupdate": {"configupdatemode": "false", "configmodstub": "changeme", "configdir": "changeme"}}
 base = os.path.expanduser("~/.config/ssdeploy")
 
 datafile = os.path.join(base, "db.json")
 configfile = os.path.join(base, "config.ini")
 cachedir = os.path.join(base, "cache")
 moddbdir = os.path.join(base, "db")
-cachedir = os.path.join(base, "cache")
 
 def checkupdate(config):
     f = open("version.txt", "rb")
@@ -42,29 +42,57 @@ def checkstructure():
         shutil.rmtree(cachedir)
     os.mkdir(cachedir)
 
+def readini(configfile):
+    Config = ConfigParser.ConfigParser()
+    Config.read(configfile)
+    return Config
+
+def writeini(configfile, cinst):
+    f = open(configfile, "w")
+    cinst.write(f)
+    f.close()
+
+def mapini(cinst):
+    cdb = {}
+    adb = {}
+    sections = cinst.sections()
+    for section in sections:
+        sdata = {}
+        options = cinst.options(section)
+        for option in options:
+            sdata[option] = cinst.get(section, option)
+            adb[option] = sdata[option]
+        cdb[section] = sdata
+    return adb, cdb #I return in the wrong order to keep compat with the main module
+
 def loadconfig():
     if not os.path.exists(configfile):
         print("Creating default config file.")
         Config = ConfigParser.ConfigParser()
-        f = open(configfile, "w")
-        Config.add_section("locations")
-        Config.add_section("system")
-        Config.set("locations", "servermoddir", "replaceme")
-        Config.set("locations", "solderurl", "replaceme")
-        Config.set("locations", "modpackname", "replaceme")
-        Config.set("system", "autoupdate", "false")
-        Config.write(f)
-        f.close()
+        Config.add_section("init")
+        Config.set("init", "setup", "To begin, set the correct paths in all the variables that say changeme.")
+        writeini(configfile, Config)
+    else:
+        Config = readini(configfile)
 
-    Config = ConfigParser.ConfigParser()
-    Config.read(configfile)
-    cdb = {}
+    sections = Config.sections()
+    for s in defaultconfig:
+        if not s in sections:
+            print("Adding section to config file: {}".format(s))
+            Config.add_section(s)
+    sections = Config.sections
+    for s in defaultconfig:
+        options = Config.options(s)
+        for o in defaultconfig[s]:
+            if not o in options:
+                print("Adding entry {0} to section {1}".format(o, s))
+                Config.set(s, o, defaultconfig[s][o])
+    f = open(configfile, "w")
+    Config.write(f)
+    f.close()
 
-    cdb["servermoddir"] = Config.get("locations", "servermoddir")
-    cdb["solderurl"] = Config.get("locations", "solderurl")
-    modpack = Config.get("locations", "modpackname")
-    cdb["modpackname"] = modpack
-    cdb["autoupdate"] = Config.get("system", "autoupdate")
+    cdb, adb = mapini(Config)
+    modpack = cdb["modpackname"]
 
     if not cdb["solderurl"][-1] == "/":
         cdb["solderurl"] = cdb["solderurl"] + "/"
@@ -90,7 +118,7 @@ def loadconfig():
     else:
         data = {"filelists": {}, "last": False}
 
-    return data, cdb
+    return data, cdb, adb
 
 def saveconfig(data):
     f = open(datafile, "w")
