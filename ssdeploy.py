@@ -140,12 +140,13 @@ else:
         updatemode = fullconfig["configupdate"]["configupdatemode"]
         configupdatedir = fullconfig["configupdate"]["configdir"]
         print("Config Update enabled, mode: {mode}, Config dir: {cdir}".format(mode=updatemode, cdir=configupdatedir))
-
-        if updatemode == "overwrite":
-            if not configupdatedir == "/":
+        if not configupdatedir == "/" or configupdatedir == "changeme":
+            if updatemode == "overwrite":
                 print("Deleting current config files")
                 shutil.rmtree(configupdatedir)
                 print("Updating config files")
                 shutil.copytree(os.path.join(modcachedir, "config"), configupdatedir)
+        else:
+            print("Error, please change configdir in the config.ini to the path to the config folder in your minecraft server.")
 
 files.saveconfig(data)
