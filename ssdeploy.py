@@ -16,6 +16,9 @@ parser.add_argument("-f", "--force",
 parser.add_argument("-c", "--clean",
     help="Clean all downloaded mods (WIP)",
     action="store_true")
+parser.add_argument("--config",
+    help="Specify alternate config directory (useful for running multiple servers)",
+    action="store")
 args = parser.parse_args()
 
 #Check to make sure we are running from the right directory
@@ -26,8 +29,8 @@ if not os.path.exists("dlib"):
 from dlib import files
 from dlib import tqdm
 
-files.checkstructure()
 #Eventually refactor so that everything uses fullconfig, then rename it to config
+files.init_paths(args)
 data, config, fullconfig = files.loadconfig()
 files.checkupdate(config)
 
@@ -147,6 +150,6 @@ else:
                 print("Updating config files")
                 shutil.copytree(os.path.join(modcachedir, "config"), configupdatedir)
         else:
-            print("Error, please change configdir in the config.ini to the path to the config folder in your minecraft server.")
+            print("Error, please change configdir in the config.ini to the abosolute path of the config folder in your minecraft server.")
 
 files.saveconfig(data)

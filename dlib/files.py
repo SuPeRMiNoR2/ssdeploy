@@ -1,15 +1,30 @@
 import os, json, shutil, sys, requests
 import configparser as ConfigParser
 
-requiredfolders = ["~/.config", "~/.config/ssdeploy", "~/.config/ssdeploy", "~/.config/ssdeploy/db", "~/.config/ssdeploy/cache"]
 defaultconfig = {"locations": {"servermoddir": "replaceme", "solderurl": "replaceme", "modpackname": "changeme"}, 
-    "system": {"autoupdate": "false", "configupdate": "false"}, "configupdate": {"configupdatemode": "false", "configmodstub": "changeme", "configdir": "changeme"}}
-base = os.path.expanduser("~/.config/ssdeploy")
+        "system": {"autoupdate": "false", "configupdate": "false"}, "configupdate": {"configupdatemode": "false", "configmodstub": "changeme", "configdir": "changeme"}}
 
-datafile = os.path.join(base, "db.json")
-configfile = os.path.join(base, "config.ini")
-cachedir = os.path.join(base, "cache")
-moddbdir = os.path.join(base, "db")
+def init_paths(args):
+    global base
+    global datafile 
+    global configfile 
+    global cachedir
+    global moddbdir
+
+    if args.config:
+        base = os.path.abspath(args.config)
+        print("Using alternate config directory {0}".format(base))
+    else:
+        base = os.path.expanduser("~/.config/ssdeploy")
+        print("Using default config directory")
+
+    datafile = os.path.join(base, "db.json")
+    configfile = os.path.join(base, "config.ini")
+    cachedir = os.path.join(base, "cache")
+    moddbdir = os.path.join(base, "db")
+
+    requiredfolders = ["", "db", "cache"] #The first one makes the base directory
+    checkstructure(requiredfolders, args)
 
 def checkupdate(config):
     f = open("version.txt", "rb")
@@ -31,12 +46,15 @@ def checkupdate(config):
             print("ssdeploy update availible! Please run git pull")
             print("-----------------------------------------------")
 
-def checkstructure():
-    for i in requiredfolders:
-        i = os.path.expanduser(i)
-        if not os.path.exists(i):
-            print("Making folder: {0}".format(i))
-            os.mkdir(i)
+def checkstructure(paths, args):
+    if not args.config:
+        if not os.path.exists(os.path.expanduser("~/.config")):
+            os.mkdir(os.path.expanduser("~/.config"))
+    for i in paths:
+        b = os.path.join(base, i)
+        if not os.path.exists(b):
+            print("Making folder: {0}".format(b))
+            os.mkdir(b)
 
     if os.path.exists(cachedir):
         shutil.rmtree(cachedir)
