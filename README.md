@@ -6,6 +6,7 @@ manually update the server mods each time you change the client mods.
 Warning: This script was developed on linux, for linux, however, as far as I am aware it does work on windows.
 
 ### Installation
+* Install python3 if you do not have it, then install pip (`python3` and `python3-pip` on ubuntu)
 * Install the python module "requests" from pip: `pip3 install requests`
 * Clone it: `git clone https://github.com/SuPeRMiNoR2/ssdeploy.git`
 * Change to the ssdeploy directory
@@ -24,5 +25,3 @@ This feature allows you to run multiple servers without conflict.
 ssdeploy supports marking mods as client only in solder, so that it does not download client only mods 
 into the server mod folder. To mark a mod as client only, put the string #clientonly anywhere 
 in the mod's description on solder.
-
-## ssdeploy requires python3!
