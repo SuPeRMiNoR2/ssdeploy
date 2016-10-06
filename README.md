@@ -7,16 +7,23 @@ ssdeploy supports marking mods as client only, so that it does not download clie
 into the server mod folder. To mark a mod as client only, put the string #clientonly anywhere 
 in the mods description on solder.
 
-Right now, the script is very beta, and very messy. I only put it on github to keep track of it. 
 
-Notice: This script was developed on linux, for linux, and I am not sure if it will work on windows.
+Warning: This script was developed on linux, for linux, however, as far as I am aware it does work on windows.
 
 ### Installation
 * Install the python module "requests" from pip: `pip3 install requests`
 * Clone it: `git clone https://github.com/SuPeRMiNoR2/ssdeploy.git`
 * Change to the ssdeploy directory
 * Run ssdeploy.py
-* Edit data/config.ini
+* Edit config.ini
 * Run ssdeploy again
+
+### Configuration
+By default, the configuration directory is located at `$HOME/.config/ssdeploy`
+All of the data files will be located inside that directory, including the main config file, config.ini
+
+ssdeploy also supports custom configuration directories that you can specify with --config /full/path/here 
+It will create the directory if it does not exist, as long as the base directory does exist. 
+This feature allows you to run multiple servers without conflict.
 
 ## ssdeploy requires python3!
