@@ -93,7 +93,7 @@ msgs = []
 for i in tqdm.tqdm(modindex["mods"], desc="Downloading Mods", leave=True):
     info = modinfo[i["name"]]
 
-    if not "#clientonly" in info["description"]:
+    if info["description"] is None or not "#clientonly" in info["description"]:
         if not os.path.exists(os.path.join(mod_database, generate_filename(i))):
             download_file(i["url"], os.path.join(mod_database, generate_filename(i)))
             dlhash = md5(os.path.join(mod_database, generate_filename(i)))
